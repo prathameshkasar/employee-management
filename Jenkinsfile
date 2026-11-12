@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-	DOCKERHUB_USERNAME = 'YOUR_DOCKERHUB_USERNAME'
+	DOCKERHUB_USERNAME = 'prathameshkasar'
         IMAGE_TAG = "${BUILD_NUMBER}"
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = '/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
