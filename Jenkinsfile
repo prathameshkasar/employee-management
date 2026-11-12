@@ -8,6 +8,7 @@ pipeline {
     }
 
     environment {
+	DOCKERHUB_USERNAME = 'YOUR_DOCKERHUB_USERNAME'
         IMAGE_TAG = "${BUILD_NUMBER}"
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = '/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -35,13 +36,13 @@ pipeline {
             steps {
                 sh '''
                     docker build \
-                      -t ${prathameshkasar}/employee-backend:${IMAGE_TAG} \
-                      -t ${prathameshkasar}/employee-backend:latest \
+                      -t ${DOCKERHUB_USERNAME}/employee-backend:${IMAGE_TAG} \
+                      -t ${DOCKERHUB_USERNAME}/employee-backend:latest \
                       ./backend
 
                     docker build \
-                      -t ${prathameshkasar}/employee-frontend:${IMAGE_TAG} \
-                      -t ${prathameshkasar}/employee-frontend:latest \
+                      -t ${DOCKERHUB_USERNAME}/employee-frontend:${IMAGE_TAG} \
+                      -t ${DOCKERHUB_USERNAME}/employee-frontend:latest \
                       ./frontend
                 '''
             }
@@ -61,11 +62,11 @@ pipeline {
                         echo "$DOCKER_PASS" | docker login \
                           -u "$DOCKER_USER" --password-stdin
 
-                        docker push ${prathameshkasar}/employee-backend:${IMAGE_TAG}
-                        docker push ${prathameshkasar}/employee-backend:latest
+                        docker push ${DOCKERHUB_USERNAME}/employee-backend:${IMAGE_TAG}
+                        docker push ${DOCKERHUB_USERNAME}/employee-backend:latest
 
-                        docker push ${prathameshkasar}/employee-frontend:${IMAGE_TAG}
-                        docker push ${prathameshkasar}/employee-frontend:latest
+                        docker push ${DOCKERHUB_USERNAME}/employee-frontend:${IMAGE_TAG}
+                        docker push ${DOCKERHUB_USERNAME}/employee-frontend:latest
 
                         docker logout
                     '''
@@ -78,12 +79,12 @@ pipeline {
                 sh '''
                     sudo -n -u ubuntu /usr/local/bin/kubectl set image \
                       deployment/backend \
-                      backend=${prathameshkasar}/employee-backend:${IMAGE_TAG} \
+                      backend=${DOCKERHUB_USERNAME}/employee-backend:${IMAGE_TAG} \
                       -n employee-app
 
                     sudo -n -u ubuntu /usr/local/bin/kubectl set image \
                       deployment/frontend \
-                      frontend=${prathameshkasar}/employee-frontend:${IMAGE_TAG} \
+                      frontend=${DOCKERHUB_USERNAME}/employee-frontend:${IMAGE_TAG} \
                       -n employee-app
 
                     sudo -n -u ubuntu /usr/local/bin/kubectl rollout status \
