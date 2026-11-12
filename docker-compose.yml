@@ -1,0 +1,28 @@
+
+services:
+
+  backend:
+
+    build: ./backend
+
+    image: employee-backend:local
+
+    ports:
+      - "8080:8080"
+
+    restart: unless-stopped
+
+
+  frontend:
+
+    build: ./frontend
+
+    image: employee-frontend:local
+
+    ports:
+      - "8081:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
